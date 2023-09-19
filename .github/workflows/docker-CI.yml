@@ -22,7 +22,7 @@ jobs:
      
     - name: Run Trivy vulnerability scanner for app server image
       uses: aquasecurity/trivy-action@master
-      continue-on-error: true
+      continue-on-error: false
       with:
         image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/app-server:v1'
         format: 'table'
@@ -33,7 +33,7 @@ jobs:
 
     - name: Run Trivy vulnerability scanner for web server image
       uses: aquasecurity/trivy-action@master
-      continue-on-error: true
+      continue-on-error: false
       with:
         image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/web-server:v1'
         format: 'table'
