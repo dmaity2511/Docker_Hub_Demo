@@ -9,7 +9,7 @@ on:
 
 jobs:
 
-  build:
+  Build-Push-DockerHub :
 
     runs-on: ubuntu-latest
 
@@ -19,7 +19,15 @@ jobs:
       run: docker image build ./src/app-server/ --file ./src/app-server/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/app-server:v1
     - name: Build the web server Docker image
       run: docker image build ./src/web-server/ --file ./src/web-server/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/web-server:v1
+     
+    - name: Install Trivy
+      run: docker pull aquasecurity/trivy
 
+    - name: Scan app server Docker image with Trivy
+      run: docker run --rm -v $(pwd)/src/app-server:/work aquasecurity/trivy --exit-code 1 --severity HIGH,CRITICAL --no-progress /work/Dockerfile
+
+    - name: Scan web server Docker image with Trivy
+      run: docker run --rm -v $(pwd)/src/web-server:/work aquasecurity/trivy --exit-code 1 --severity HIGH,CRITICAL --no-progress /work/Dockerfile
 
     - name: Login to Docker Hub
       uses: docker/login-action@v3
@@ -27,9 +35,9 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
 
-    - name: Push Images to Docker Hub
-      run: |
-       docker push ${{ secrets.DOCKERHUB_USERNAME }}/app-server:v1
-       docker push ${{ secrets.DOCKERHUB_USERNAME }}/web-server:v1
+    - name: Push App Server Image to Docker Hub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/app-server:v1
+    - name: Push Web Server Image to Docker Hub
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/web-server:v1
  
 
