@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build ./src/app-server/ --file ./src/app-server/Dockerfile --tag app-server:$(date +%s)
+    - name: Build the Docker image
+      run: docker build ./src/web-server/ --file ./src/web-server/Dockerfile --tag web-server:$(date +%s)
+
