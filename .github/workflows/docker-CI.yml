@@ -16,9 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the app server Docker image
-      run: docker image build ./src/app-server/ --file ./src/app-server/Dockerfile --tag app-server:v1
+      run: docker image build ./src/app-server/ --file ./src/app-server/Dockerfile --tag $DOCKER_REPOSITORY/app-server:v1
     - name: Build the web serverDocker image
-      run: docker image build ./src/web-server/ --file ./src/web-server/Dockerfile --tag web-server:v1
+      run: docker image build ./src/web-server/ --file ./src/web-server/Dockerfile --tag $DOCKER_REPOSITORY/web-server:v1
 
     - name: Login to Docker Hub
       uses: docker/login-action@v3
