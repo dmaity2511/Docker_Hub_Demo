@@ -21,8 +21,10 @@ jobs:
       run: docker image build ./src/web-server/ --file ./src/web-server/Dockerfile --tag web-server:$(date +%s)
 
     - name: Login to Docker Hub
-      run: |
-        docker login -u $DOCKER_REPOSITORY -p ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
 
     - name: Push Images to Docker Hub
       run: |
