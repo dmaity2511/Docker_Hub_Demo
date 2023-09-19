@@ -1,0 +1,21 @@
+name: Deploy to Local Environment
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Docker Image CI"]
+    types:
+      - completed
+
+jobs:
+  deploy-local:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Deploy app to local environment
+      run: |
+        docker-compose -f ./docker-compose.yaml pull
+        docker-compose -f ./docker-compose.yaml up -d
+      working-directory: ${{ github.workspace }}
