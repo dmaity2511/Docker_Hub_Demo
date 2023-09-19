@@ -28,6 +28,8 @@ jobs:
 
     - name: Push Images to Docker Hub
       run: |
-        docker push app-server:v1
-        docker push web-server:v1
+         docker push $DOCKER_REPOSITORY/app-server:v1
+         docker push $DOCKER_REPOSITORY/web-server:v1
+      env:
+        DOCKER_REPOSITORY: ${{ secrets.DOCKERHUB_USERNAME }}  
 
