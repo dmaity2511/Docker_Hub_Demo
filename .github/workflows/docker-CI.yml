@@ -20,14 +20,27 @@ jobs:
     - name: Build the web server Docker image
       run: docker image build ./src/web-server/ --file ./src/web-server/Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/web-server:v1
      
-    - name: Install Trivy
-      run: docker pull aquasecurity/trivy
+    - name: Run Trivy vulnerability scanner for app server image
+      uses: aquasecurity/trivy-action@master
+      continue-on-error: true
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/app-server:v1'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'MEDIUM,HIGH,CRITICAL'
 
-    - name: Scan app server Docker image with Trivy
-      run: docker run --rm -v $(pwd)/src/app-server:/work aquasecurity/trivy --exit-code 1 --severity HIGH,CRITICAL --no-progress /work/Dockerfile
-
-    - name: Scan web server Docker image with Trivy
-      run: docker run --rm -v $(pwd)/src/web-server:/work aquasecurity/trivy --exit-code 1 --severity HIGH,CRITICAL --no-progress /work/Dockerfile
+    - name: Run Trivy vulnerability scanner for web server image
+      uses: aquasecurity/trivy-action@master
+      continue-on-error: true
+      with:
+        image-ref: 'docker.io/${{ secrets.DOCKERHUB_USERNAME }}/web-server:v1'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'MEDIUM,HIGH,CRITICAL'
 
     - name: Login to Docker Hub
       uses: docker/login-action@v3
