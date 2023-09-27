@@ -146,13 +146,13 @@ spec:
               protocol: TCP
           resources: {}
           volumeMounts:
-            - mountPath: /data1/db
+            - mountPath: /data/db
               name: app-volume1
       restartPolicy: Always
       volumes:
-        - name: app-volume1
+        - name: app-volume2
           persistentVolumeClaim:
-            claimName: app-volume1
+            claimName: app-volume2
 status: {}
 
 ---
@@ -161,8 +161,8 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: app-volume1
-  name: app-volume1
+    io.kompose.service: app-volume2
+  name: app-volume2
   namespace: default
 spec:
   accessModes:
