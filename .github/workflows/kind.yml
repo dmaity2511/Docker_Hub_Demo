@@ -1,0 +1,28 @@
+name: Deploy to Local kind cluster
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Docker Image CI"]
+    types:
+      - completed
+
+jobs:
+  deploy-local:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKER_REPOSITORY_PASSWORD }}
+
+    - name: Deploy app to local environment
+      run: |
+        kubectl apply -f ./k8s-manifests.yaml
+        kubectl port-forward service/app-server 3000:3000
+        kubectl port-forward service/web-server 80:80
+      working-directory: ${{ github.workspace }}
