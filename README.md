@@ -11,8 +11,8 @@ Port forwarding is needed
 -  kubectl port-forward service/mongo 27017:27017
 
 Follow below steps to provide input data to mongo-db
-- docker exec -it <mongo container name> bash
-- kubectl exec -it <mongo pod name> -- /bin/bash
+- docker exec -it (mongo container name) bash
+- kubectl exec -it (mongo pod name) -- /bin/bash
 
 - mongosh "mongodb://localhost:27017" --username root --authenticationDatabase admin
 - give password when prompted 
