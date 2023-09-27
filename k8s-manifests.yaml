@@ -146,7 +146,7 @@ spec:
               protocol: TCP
           resources: {}
           volumeMounts:
-            - mountPath: /data/db
+            - mountPath: /data/db1
               name: app-volume
       restartPolicy: Always
       volumes:
