@@ -23,6 +23,7 @@ jobs:
     - name: Deploy app to local environment
       run: |
         kubectl apply -f ./k8s-manifests.yaml
+        sleep 60s
         kubectl port-forward service/app-server 3000:3000
         kubectl port-forward service/web-server 80:80
       working-directory: ${{ github.workspace }}
