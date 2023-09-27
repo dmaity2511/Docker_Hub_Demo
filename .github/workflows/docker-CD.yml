@@ -1,4 +1,4 @@
-name: Deploy to Local Environment
+name: Deploy to Local kind cluster
 
 on:
   workflow_dispatch:
@@ -22,6 +22,7 @@ jobs:
 
     - name: Deploy app to local environment
       run: |
-        docker-compose -f ./docker-compose.yaml pull
-        docker-compose -f ./docker-compose.yaml up -d
+        kubectl apply -f .
+        kubectl port-forward service/app-server 3000:3000
+        kubectl port-forward service/web-server 80:80
       working-directory: ${{ github.workspace }}
