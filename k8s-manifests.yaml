@@ -147,12 +147,12 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /data/db
-              name: app-volume2
+              name: app-volume3
       restartPolicy: Always
       volumes:
-        - name: app-volume2
+        - name: app-volume3
           persistentVolumeClaim:
-            claimName: app-volume2
+            claimName: app-volume3
 status: {}
 
 ---
@@ -161,8 +161,8 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: app-volume2
-  name: app-volume2
+    io.kompose.service: app-volume3
+  name: app-volume3
   namespace: default
 spec:
   accessModes:
